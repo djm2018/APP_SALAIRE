@@ -1,1 +1,21 @@
+ nœud{
+      stage('Clone') {
+ caisse scm
+      }
+ étape('SSH') {
+ sh « apk ajouter ansible sshpass »
+ sh « rm -rf /root/.ssh »
+ sh « echo \"192.168.56.103 app-salaire.jordy.form\ » > /etc/hosts »
+ sh « ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa »
+ sh « sshpass -p 'Respons11' ssh-copy-id -o stricthostkeychecking=no root@192.168.56.103 »
+      }
+ étape('Ansible') {
+        ansiblePlaybook (
+            inventaire: 'hosts.yaml',
+            playbook: 'playbook.yaml',
+            colorisé: vrai,
+            devenir : vrai,
+        )
+      }
 
+}
