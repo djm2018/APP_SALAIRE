@@ -1,1 +1,55 @@
+---
 
+- nom : "Installation du package"
+  miam :
+    nom:
+      - git
+      - httpd 
+      - php
+      - php-mysql
+    état: présent
+
+- nom : Donner le mode accessible en écriture au dossier http
+  fichier :
+   chemin d’accès: /var/www/html
+   état: répertoire
+   mode: '0755'
+
+- name : cloner un référentiel avec un répertoire git séparé
+  git:
+    dépôt : https://github.com/ludovic-tech/app-php
+    dest: /var/www/html/app-php
+
+- name : autoriser le trafic dans la zone par défaut pour le service https
+  pare-feu :
+    service: http
+    permanent: oui
+    état: activé
+
+- nom: redémarrer et activer le service apache systemd
+  systemd:
+   nom: httpd
+   activé: oui
+   état : redémarré
+   
+- nom: "installation du paquet mariadb"
+  miam :
+   nom: 
+    - mariadb
+    - mariadb-serveur
+   état: présent
+
+- nom : redémarrez et activez le service mariadb systemd
+  systemd:
+    nom: mariadb
+    activé: oui
+    état : redémarré
+
+- nom : Démarrer mysql_secure_installation
+  commande: 'echo « & y y racine racine y n y y » | ./usr/bin/mysql_secure_installation'
+
+- nom : redémarrez et activez le service mariadb systemd
+  systemd:
+    nom: mariadb
+    activé: oui
+    état : redémarré
